@@ -1,28 +1,17 @@
-package io.renren.modules.generator.controller;
+package com.fhk.sample.web.controller;
+
 
 import java.util.Arrays;
 import java.util.Map;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import io.renren.modules.generator.entity.AccountEntity;
-import io.renren.modules.generator.service.AccountService;
-import io.renren.common.utils.PageUtils;
-import io.renren.common.utils.R;
 
 
 
 /**
  * 
  *
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author lingzan
+ * 
  * @date 2022-04-16 09:52:44
  */
 @RestController
@@ -49,7 +38,7 @@ public class AccountController {
     @RequestMapping("/info/{id}")
     @RequiresPermissions("generator:account:info")
     public R info(@PathVariable("id") Integer id){
-		AccountEntity account = accountService.getById(id);
+		Account account = accountService.getById(id);
 
         return R.ok().put("account", account);
     }
@@ -59,7 +48,7 @@ public class AccountController {
      */
     @RequestMapping("/save")
     @RequiresPermissions("generator:account:save")
-    public R save(@RequestBody AccountEntity account){
+    public R save(@RequestBody Account account){
 		accountService.save(account);
 
         return R.ok();
@@ -70,7 +59,7 @@ public class AccountController {
      */
     @RequestMapping("/update")
     @RequiresPermissions("generator:account:update")
-    public R update(@RequestBody AccountEntity account){
+    public R update(@RequestBody Account account){
 		accountService.updateById(account);
 
         return R.ok();

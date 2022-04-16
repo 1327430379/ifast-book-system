@@ -1,18 +1,10 @@
-package io.renren.modules.generator.controller;
+package com.fhk.sample.web.controller;
 
 import java.util.Arrays;
 import java.util.Map;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import io.renren.modules.generator.entity.BookEntity;
-import io.renren.modules.generator.service.BookService;
+import com.fhk.sample.domain.entity.Book;
+import com.fhk.sample.service.BookService;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 
@@ -21,8 +13,8 @@ import io.renren.common.utils.R;
 /**
  * 
  *
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author lingzan
+ * 
  * @date 2022-04-16 09:52:44
  */
 @RestController
@@ -49,7 +41,7 @@ public class BookController {
     @RequestMapping("/info/{id}")
     @RequiresPermissions("generator:book:info")
     public R info(@PathVariable("id") Integer id){
-		BookEntity book = bookService.getById(id);
+		Book book = bookService.getById(id);
 
         return R.ok().put("book", book);
     }
@@ -59,7 +51,7 @@ public class BookController {
      */
     @RequestMapping("/save")
     @RequiresPermissions("generator:book:save")
-    public R save(@RequestBody BookEntity book){
+    public R save(@RequestBody Book book){
 		bookService.save(book);
 
         return R.ok();
@@ -70,7 +62,7 @@ public class BookController {
      */
     @RequestMapping("/update")
     @RequiresPermissions("generator:book:update")
-    public R update(@RequestBody BookEntity book){
+    public R update(@RequestBody Book book){
 		bookService.updateById(book);
 
         return R.ok();

@@ -1,28 +1,14 @@
-package io.renren.modules.generator.controller;
+ package com.fhk.sample.web.controller;
 
 import java.util.Arrays;
 import java.util.Map;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import io.renren.modules.generator.entity.ShelfEntity;
-import io.renren.modules.generator.service.ShelfService;
-import io.renren.common.utils.PageUtils;
-import io.renren.common.utils.R;
-
 
 
 /**
  * 用户已购买书籍表
  *
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author lingzan
+ * 
  * @date 2022-04-16 09:52:44
  */
 @RestController

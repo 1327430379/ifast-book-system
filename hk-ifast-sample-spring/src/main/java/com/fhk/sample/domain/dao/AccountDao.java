@@ -1,17 +1,14 @@
-package io.renren.modules.generator.dao;
-
-import io.renren.modules.generator.entity.AccountEntity;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
+package com.fhk.sample.domain.dao;
+import com.fhk.sample.domain.entity.Account;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * 
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author lingzan
+ * 
  * @date 2022-04-16 09:52:44
  */
-@Mapper
-public interface AccountDao extends BaseMapper<AccountEntity> {
+public interface AccountDao extends JpaRepository<Account,Integer> {
 	
 }

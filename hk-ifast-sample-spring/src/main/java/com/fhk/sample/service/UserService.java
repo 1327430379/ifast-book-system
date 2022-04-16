@@ -1,14 +1,19 @@
-package io.renren.modules.generator.service;
+package com.fhk.sample.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import io.renren.common.utils.PageUtils;
-import io.renren.modules.generator.entity.UserEntity;
-
-import java.util.Map;
+import com.fhk.sample.domain.dto.UserDTO;
+import com.fhk.sample.domain.entity.User;
 
 
+
+/**
+ * @author lingzan
+ */
 public interface UserService {
 
-    PageUtils queryPage(Map<String, Object> params);
+    User register(User user);
+
+    User getById(Integer id);
+
+    User updateById(User user);
 }
 

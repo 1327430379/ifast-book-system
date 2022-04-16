@@ -1,4 +1,5 @@
-package io.renren.modules.generator.controller;
+package package com.fhk.sample.web.controller;
+;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -11,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.renren.modules.generator.entity.CategoryEntity;
-import io.renren.modules.generator.service.CategoryService;
+import com.fhk.sample.domain.entity.Category;
+import com.fhk.sample.service.CategoryService;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 
@@ -21,8 +22,8 @@ import io.renren.common.utils.R;
 /**
  * 分类
  *
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author lingzan
+ * 
  * @date 2022-04-16 09:52:44
  */
 @RestController
@@ -49,7 +50,7 @@ public class CategoryController {
     @RequestMapping("/info/{id}")
     @RequiresPermissions("generator:category:info")
     public R info(@PathVariable("id") Integer id){
-		CategoryEntity category = categoryService.getById(id);
+		Category category = categoryService.getById(id);
 
         return R.ok().put("category", category);
     }
@@ -59,7 +60,7 @@ public class CategoryController {
      */
     @RequestMapping("/save")
     @RequiresPermissions("generator:category:save")
-    public R save(@RequestBody CategoryEntity category){
+    public R save(@RequestBody Category category){
 		categoryService.save(category);
 
         return R.ok();
@@ -70,7 +71,7 @@ public class CategoryController {
      */
     @RequestMapping("/update")
     @RequiresPermissions("generator:category:update")
-    public R update(@RequestBody CategoryEntity category){
+    public R update(@RequestBody Category category){
 		categoryService.updateById(category);
 
         return R.ok();

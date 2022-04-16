@@ -1,4 +1,4 @@
-package io.renren.modules.generator.controller;
+package com.fhk.sample.web.controller;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.renren.modules.generator.entity.AuthorEntity;
-import io.renren.modules.generator.service.AuthorService;
+import com.fhk.sample.domain.entity.Author;
+import com.fhk.sample.service.AuthorService;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 
@@ -21,8 +21,8 @@ import io.renren.common.utils.R;
 /**
  * 作者表
  *
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author lingzan
+ * 
  * @date 2022-04-16 09:52:44
  */
 @RestController
@@ -49,7 +49,7 @@ public class AuthorController {
     @RequestMapping("/info/{id}")
     @RequiresPermissions("generator:author:info")
     public R info(@PathVariable("id") Integer id){
-		AuthorEntity author = authorService.getById(id);
+		Author author = authorService.getById(id);
 
         return R.ok().put("author", author);
     }
@@ -59,7 +59,7 @@ public class AuthorController {
      */
     @RequestMapping("/save")
     @RequiresPermissions("generator:author:save")
-    public R save(@RequestBody AuthorEntity author){
+    public R save(@RequestBody Author author){
 		authorService.save(author);
 
         return R.ok();
@@ -70,7 +70,7 @@ public class AuthorController {
      */
     @RequestMapping("/update")
     @RequiresPermissions("generator:author:update")
-    public R update(@RequestBody AuthorEntity author){
+    public R update(@RequestBody Author author){
 		authorService.updateById(author);
 
         return R.ok();

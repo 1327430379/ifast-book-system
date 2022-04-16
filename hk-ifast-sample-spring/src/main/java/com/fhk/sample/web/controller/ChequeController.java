@@ -1,4 +1,5 @@
-package io.renren.modules.generator.controller;
+package package com.fhk.sample.web.controller;
+;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -11,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.renren.modules.generator.entity.ChequeEntity;
-import io.renren.modules.generator.service.ChequeService;
+import com.fhk.sample.domain.entity.Cheque;
+import com.fhk.sample.service.ChequeService;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 
@@ -21,8 +22,8 @@ import io.renren.common.utils.R;
 /**
  * 支票
  *
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author lingzan
+ * 
  * @date 2022-04-16 09:52:44
  */
 @RestController
@@ -49,7 +50,7 @@ public class ChequeController {
     @RequestMapping("/info/{id}")
     @RequiresPermissions("generator:cheque:info")
     public R info(@PathVariable("id") Integer id){
-		ChequeEntity cheque = chequeService.getById(id);
+		Cheque cheque = chequeService.getById(id);
 
         return R.ok().put("cheque", cheque);
     }
@@ -59,7 +60,7 @@ public class ChequeController {
      */
     @RequestMapping("/save")
     @RequiresPermissions("generator:cheque:save")
-    public R save(@RequestBody ChequeEntity cheque){
+    public R save(@RequestBody Cheque cheque){
 		chequeService.save(cheque);
 
         return R.ok();
@@ -70,7 +71,7 @@ public class ChequeController {
      */
     @RequestMapping("/update")
     @RequiresPermissions("generator:cheque:update")
-    public R update(@RequestBody ChequeEntity cheque){
+    public R update(@RequestBody Cheque cheque){
 		chequeService.updateById(cheque);
 
         return R.ok();

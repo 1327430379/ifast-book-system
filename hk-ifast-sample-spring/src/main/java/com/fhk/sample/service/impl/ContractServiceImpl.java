@@ -1,17 +1,4 @@
-package io.renren.modules.generator.service.impl;
-
-import org.springframework.stereotype.Service;
-import java.util.Map;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import io.renren.common.utils.PageUtils;
-import io.renren.common.utils.Query;
-
-import io.renren.modules.generator.dao.ContractDao;
-import io.renren.modules.generator.entity.ContractEntity;
-import io.renren.modules.generator.service.ContractService;
-
+package com.fhk.sample.service.impl;
 
 @Service("contractService")
 public class ContractServiceImpl extends ServiceImpl<ContractDao, ContractEntity> implements ContractService {

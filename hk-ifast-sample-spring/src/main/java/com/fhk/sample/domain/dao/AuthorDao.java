@@ -1,17 +1,15 @@
-package io.renren.modules.generator.dao;
+package com.fhk.sample.domain.dao;
 
-import io.renren.modules.generator.entity.AuthorEntity;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
+import com.fhk.sample.domain.entity.Author;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * 作者表
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author lingzan
+ * 
  * @date 2022-04-16 09:52:44
  */
-@Mapper
-public interface AuthorDao extends BaseMapper<AuthorEntity> {
+public interface AuthorDao extends JpaRepository<Author,Integer> {
 	
 }

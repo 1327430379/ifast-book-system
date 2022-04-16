@@ -1,17 +1,16 @@
-package io.renren.modules.generator.dao;
+package com.fhk.sample.domain.dao;
 
-import io.renren.modules.generator.entity.ShelfEntity;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
+
+import com.fhk.sample.domain.entity.Shelf;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * 用户已购买书籍表
+ *
+ * @author lingzan
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
  * @date 2022-04-16 09:52:44
  */
-@Mapper
-public interface ShelfDao extends BaseMapper<ShelfEntity> {
-	
+public interface ShelfDao extends JpaRepository<Shelf, Integer> {
+
 }

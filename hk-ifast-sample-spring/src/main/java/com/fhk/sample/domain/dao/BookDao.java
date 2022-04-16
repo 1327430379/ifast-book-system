@@ -1,17 +1,16 @@
-package io.renren.modules.generator.dao;
+package com.fhk.sample.domain.dao;
 
-import io.renren.modules.generator.entity.BookEntity;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
+
+import com.fhk.sample.domain.entity.Book;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * 
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author lingzan
+ * 
  * @date 2022-04-16 09:52:44
  */
-@Mapper
-public interface BookDao extends BaseMapper<BookEntity> {
+public interface BookDao extends JpaRepository<Book,Integer> {
 	
 }

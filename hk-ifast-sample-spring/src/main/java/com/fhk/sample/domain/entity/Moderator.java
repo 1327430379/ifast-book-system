@@ -1,28 +1,29 @@
-package io.renren.modules.generator.entity;
+package com.fhk.sample.domain.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
 
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * 版主
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author lingzan
+ * 
  * @date 2022-04-16 09:52:44
  */
 @Data
-@TableName("moderator")
-public class ModeratorEntity implements Serializable {
+@Table(name = "moderator")
+public class Moderator implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 主键id
 	 */
-	@TableId
+	@Id
 	private Integer id;
 	/**
 	 * 用户名

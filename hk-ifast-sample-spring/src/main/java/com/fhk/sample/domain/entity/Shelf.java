@@ -1,28 +1,28 @@
-package io.renren.modules.generator.entity;
-
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+package com.fhk.sample.domain.entity;
 
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
 
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
- * 用户已购买书籍表
+ * 用户书架
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author lingzan
+ * 
  * @date 2022-04-16 09:52:44
  */
 @Data
-@TableName("shelf")
-public class ShelfEntity implements Serializable {
+@Table(name = "shelf")
+public class Shelf implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 主键id
 	 */
-	@TableId
+	@Id
 	private Integer id;
 	/**
 	 * 图书id

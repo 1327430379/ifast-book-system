@@ -1,29 +1,22 @@
-package io.renren.modules.generator.service.impl;
+package com.fhk.sample.service.impl;
 
 import org.springframework.stereotype.Service;
 import java.util.Map;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import io.renren.common.utils.PageUtils;
-import io.renren.common.utils.Query;
 
-import io.renren.modules.generator.dao.AuthorDao;
-import io.renren.modules.generator.entity.AuthorEntity;
-import io.renren.modules.generator.service.AuthorService;
+import com.fhk.sample.domain.dao.AuthorDao;
+import com.fhk.sample.domain.entity.Author;
+import com.fhk.sample.service.AuthorService;
 
 
+/**
+ * @author lingzan
+ */
 @Service("authorService")
-public class AuthorServiceImpl extends ServiceImpl<AuthorDao, AuthorEntity> implements AuthorService {
+public class AuthorServiceImpl extends ServiceImpl<AuthorDao, Author> implements AuthorService {
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        IPage<AuthorEntity> page = this.page(
-                new Query<AuthorEntity>().getPage(params),
-                new QueryWrapper<AuthorEntity>()
-        );
-
-        return new PageUtils(page);
+        return null;
     }
 
 }

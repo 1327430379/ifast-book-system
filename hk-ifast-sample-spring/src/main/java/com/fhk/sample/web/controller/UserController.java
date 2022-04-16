@@ -1,41 +1,44 @@
-package io.renren.modules.generator.controller;
+ package com.fhk.sample.web.controller;
+
+import com.fhk.sample.common.rest.RestResponse;
+import com.fhk.sample.domain.dto.UserDTO;
+import com.fhk.sample.domain.entity.User;
+import com.fhk.sample.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import io.renren.modules.generator.entity.UserEntity;
-import io.renren.modules.generator.service.UserService;
-import io.renren.common.utils.PageUtils;
-import io.renren.common.utils.R;
 
 
 
 /**
  * 用户表
  *
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author lingzan
+ * 
  * @date 2022-04-16 09:52:44
  */
 @RestController
 @RequestMapping("user")
-public class UserController {
+public class UserController extends BaseController{
     @Autowired
     private UserService userService;
+
+
+    @RequestMapping("/register")
+    public RestResponse<String> register(@RequestBody @Validated UserDTO userDTO) {
+        userService.register(this.convert(userDTO, User.class));
+        return RestResponse.SUCCEED;
+    }
 
     /**
      * 列表
      */
-    @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
+    @GetMapping("/list")
+    public List<User> list(){
         PageUtils page = userService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -45,28 +48,17 @@ public class UserController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Integer id){
-		UserEntity user = userService.getById(id);
-
-        return R.ok().put("user", user);
+    @GetMapping("/{id}")
+    public RestResponse<User> getById(@PathVariable("id") Integer id){
+		return RestResponse.success(userService.getById(id));
     }
 
-    /**
-     * 保存
-     */
-    @RequestMapping("/save")
-    public R save(@RequestBody UserEntity user){
-		userService.save(user);
-
-        return R.ok();
-    }
 
     /**
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody UserEntity user){
+    public User update(@RequestBody @Validated UserDTO user){
 		userService.updateById(user);
 
         return R.ok();

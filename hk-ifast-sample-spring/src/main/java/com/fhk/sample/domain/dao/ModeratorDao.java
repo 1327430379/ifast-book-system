@@ -1,17 +1,17 @@
-package io.renren.modules.generator.dao;
+package com.fhk.sample.domain.dao;
 
-import io.renren.modules.generator.entity.ModeratorEntity;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
+
+import com.fhk.sample.domain.entity.Moderator;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * 版主
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author lingzan
+ * 
  * @date 2022-04-16 09:52:44
  */
-@Mapper
-public interface ModeratorDao extends BaseMapper<ModeratorEntity> {
+
+public interface ModeratorDao extends JpaRepository<Moderator,Integer> {
 	
 }
