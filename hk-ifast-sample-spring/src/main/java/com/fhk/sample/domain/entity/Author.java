@@ -1,5 +1,6 @@
 package com.fhk.sample.domain.entity;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.Table;
@@ -15,6 +16,7 @@ import java.io.Serializable;
  */
 @Data
 @Table(name = "author")
+@Builder
 public class Author implements Serializable {
 	private static final long serialVersionUID = 1L;
 

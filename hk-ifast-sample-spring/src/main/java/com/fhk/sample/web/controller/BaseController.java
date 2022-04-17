@@ -5,6 +5,7 @@ import com.fhk.sample.common.rest.RestResponse;
 import com.fhk.sample.util.BeanCopierUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * @Author: 凌瓒

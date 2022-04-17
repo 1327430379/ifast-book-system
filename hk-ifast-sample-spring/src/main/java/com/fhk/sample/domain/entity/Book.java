@@ -1,7 +1,10 @@
 package com.fhk.sample.domain.entity;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Table;
 import java.math.BigDecimal;
@@ -17,6 +20,8 @@ import java.util.Date;
  */
 @Data
 @Table(name = "book")
+@Builder
+@NoArgsConstructor
 public class Book implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -37,9 +42,9 @@ public class Book implements Serializable {
 	 */
 	private String isbn;
 	/**
-	 * 内容
+	 * 内容存放路径
 	 */
-	private String content;
+	private String path;
 	/**
 	 * 内容类型:pdf,txt
 	 */

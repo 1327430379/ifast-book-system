@@ -1,8 +1,9 @@
 package com.fhk.sample.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import io.renren.common.utils.PageUtils;
+import com.fhk.sample.domain.entity.Category;
+import com.fhk.sample.domain.vo.PageVO;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,6 +15,15 @@ import java.util.Map;
  */
 public interface CategoryService {
 
-    PageUtils queryPage(Map<String, Object> params);
+    Category add(Category category);
+
+    Category update(Category category);
+
+    Category queryById(Integer id);
+
+    void deleteById(Integer id);
+
+    List<Category> list(String name);
+
 }
 

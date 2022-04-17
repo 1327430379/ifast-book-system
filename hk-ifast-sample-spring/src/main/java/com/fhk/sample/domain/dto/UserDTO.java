@@ -2,8 +2,8 @@ package com.fhk.sample.domain.dto;
 
 import lombok.Data;
 import lombok.Getter;
-import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -55,6 +55,12 @@ public class UserDTO {
      * 状态
      */
     private Integer status;
+
+    /**
+     * 角色
+     */
+    @NotBlank(groups = InsertGroup.class)
+    private String role;
 
     /**
      * 审批时间

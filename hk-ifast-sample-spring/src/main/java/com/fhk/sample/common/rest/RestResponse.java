@@ -47,6 +47,11 @@ public class RestResponse<T> {
         this.data = data;
     }
 
+    public static  RestResponse<Void> success() {
+        return new RestResponse<>();
+    }
+
+
     public static <T> RestResponse<T> success(T data) {
         return new RestResponse<>(data);
     }

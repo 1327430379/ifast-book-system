@@ -55,10 +55,20 @@ public class User implements Serializable {
 	 * 地址
 	 */
 	private String address;
+
+	/**
+	 * 角色
+	 */
+	private String role;
 	/**
 	 * 状态
 	 */
 	private Integer status;
+
+	/**
+	 * 审核状态
+	 */
+	private String approveStatus;
 	/**
 	 * 创建时间
 	 */

@@ -1,6 +1,13 @@
 package com.fhk.sample.web.controller;
 
 
+import com.fhk.sample.common.rest.RestResponse;
+import com.fhk.sample.domain.entity.Account;
+import com.fhk.sample.domain.vo.PageVO;
+import com.fhk.sample.service.AccountService;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -15,20 +22,17 @@ import java.util.Map;
  * @date 2022-04-16 09:52:44
  */
 @RestController
-@RequestMapping("generator/account")
-public class AccountController {
-    @Autowired
+@RequestMapping("account")
+public class AccountController extends BaseController{
+    @Resource
     private AccountService accountService;
 
     /**
      * 列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("generator:account:list")
-    public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = accountService.queryPage(params);
-
-        return R.ok().put("page", page);
+    public RestResponse<PageVO<Account>> list(@RequestParam Map<String, Object> params){
+        return RestResponse.success(null);
     }
 
 
@@ -36,44 +40,25 @@ public class AccountController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("generator:account:info")
-    public R info(@PathVariable("id") Integer id){
-		Account account = accountService.getById(id);
-
-        return R.ok().put("account", account);
+    public RestResponse<Account> info(@PathVariable("id") Integer id){
+        return RestResponse.success(null);
     }
 
     /**
-     * 保存
+     * 添加
      */
-    @RequestMapping("/save")
-    @RequiresPermissions("generator:account:save")
-    public R save(@RequestBody Account account){
-		accountService.save(account);
-
-        return R.ok();
+    @RequestMapping("/add")
+    public RestResponse<Account> save(@RequestBody Account account){
+        return RestResponse.success(null);
     }
 
     /**
      * 修改
      */
     @RequestMapping("/update")
-    @RequiresPermissions("generator:account:update")
-    public R update(@RequestBody Account account){
-		accountService.updateById(account);
-
-        return R.ok();
+    public RestResponse<Account> update(@RequestBody Account account){
+        return RestResponse.success(null);
     }
 
-    /**
-     * 删除
-     */
-    @RequestMapping("/delete")
-    @RequiresPermissions("generator:account:delete")
-    public R delete(@RequestBody Integer[] ids){
-		accountService.removeByIds(Arrays.asList(ids));
-
-        return R.ok();
-    }
 
 }

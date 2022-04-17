@@ -1,22 +1,71 @@
 package com.fhk.sample.service.impl;
 
+import com.fhk.sample.domain.vo.PageVO;
+import com.fhk.sample.util.BizAssert;
+import com.fhk.sample.util.PageUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-import com.fhk.sample.domain.dao.AuthorDao;
+import com.fhk.sample.domain.dao.AuthorRepository;
 import com.fhk.sample.domain.entity.Author;
 import com.fhk.sample.service.AuthorService;
+
+import javax.annotation.Resource;
+import javax.persistence.criteria.Predicate;
 
 
 /**
  * @author lingzan
  */
-@Service("authorService")
-public class AuthorServiceImpl extends ServiceImpl<AuthorDao, Author> implements AuthorService {
+@Service
+public class AuthorServiceImpl implements AuthorService {
+
+    @Resource
+    private AuthorRepository authorRepository;
 
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        return null;
+    public PageVO<Author> queryPage(Integer pageNum, Integer pageSize, Author criteria) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
+        Specification<Author> specification = (root, cq, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (StringUtils.isNotBlank(criteria.getName())) {
+                predicates.add(cb.equal(root.get("name"), criteria.getName()));
+            }
+            return cb.and(predicates.toArray(new Predicate[0]));
+        };
+        Page<Author> page = authorRepository.findAll(specification, pageable);
+        return PageUtil.convert(page);
     }
 
+    @Override
+    public Author queryById(Integer id) {
+        return authorRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Author add(Author author) {
+        return authorRepository.save(author);
+    }
+
+    @Override
+    public Author update(Author author) {
+        Author authorOfExist = this.queryById(author.getId());
+        BizAssert.isNotNull(authorOfExist, "作者信息不存在");
+        return authorRepository.save(author);
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+        Author authorOfExist = this.queryById(id);
+        BizAssert.isNotNull(authorOfExist, "作者信息不存在");
+        authorRepository.deleteById(id);
+    }
 }
