@@ -1,6 +1,6 @@
 'use strict';
 var app = angular.module('std.app');
-app.controller('accountController', function ($scope, $http) {
+app.controller('contractController', function ($scope, $http) {
 
 
     $scope.showAddWindow = function () {
@@ -10,63 +10,52 @@ app.controller('accountController', function ($scope, $http) {
     $scope.hideAddWindow = function () {
         document.getElementById('modal-window').style.display = 'none';
     }
-    $scope.listAllAccount = function () {
-        $scope.hideAddWindow();
+    $scope.listAll = function () {
+        //$scope.hideAddWindow();
         $http({
             method: "GET",
-            url: "http://localhost:8080/account/list"
+            url: "http://localhost:8080/contract/list"
         }).then(function (res) {
-            $scope.accountList = res.data.data;
+            $scope.contractList = res.data.data;
         });
     };
 
-
-    $scope.queryTransRecord = function (accountId) {
-        alert('查询流水记录：accountId:' + accountId);
-        $scope.hideAddWindow();
-        $http({
-            method: "GET",
-            url: "http://localhost:8080/trans/record/list?accountId=" + accountId
-        }).then(function (res) {
-            $scope.transRecordList = res.data.data;
-
-        });
-    };
-
-    $scope.saveTransRecord = function (transRecord) {
+    $scope.save = function (contract) {
+        console.log("请求参数：" + JSON.stringify(contract));
         var url = "";
-        if (category.id != null) {
-            url = "http://localhost:8080/trans/record/update";
+        if (contract.id != null) {
+            url = "http://localhost:8080/contract/update";
         } else {
-            url = "http://localhost:8080/trans/record/add";
+            url = "http://localhost:8080/contract/add";
         }
         $http({
             method: "POST",
             url: url,
-            data: transRecord
+            data: contract
         }).then(function (res) {
-            console.log(res);
-            $scope.response(res, "POST");
+
             $scope.listAll();
+            console.log(res);
         });
 
     };
 
-    $scope.getTransRecordById = function (id) {
+    $scope.getById = function (id) {
         $http({
             method: "GET",
-            url: "http://localhost:8080/trans/record/info/" + id
+            url: "http://localhost:8080/contract/info/" + id
         }).then(function (res) {
-            $scope.transRecordModel = res.data.data;
+            $scope.contractModel = res.data.data;
             console.log("result数据：" + JSON.stringify(res.data.data));
         });
     };
 
-    $scope.removeTransRecord = function (id) {
+    $scope.remove = function (id) {
         $http({
             method: "DELETE",
-            url: "http://localhost:8080/trans/record?id=" + id
+            url: "http://localhost:8080/contract/delete/" + id
         }).then(function (res) {
+            $scope.response(res,"DELETE");
             $scope.listAll();
         });
     };
@@ -85,7 +74,6 @@ app.controller('accountController', function ($scope, $http) {
             alert('提交到服务器成功');
         }
     }
-
 
 });
 

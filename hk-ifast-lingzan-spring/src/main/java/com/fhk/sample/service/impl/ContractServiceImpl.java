@@ -4,17 +4,23 @@ import com.fhk.sample.common.constants.ContractStatus;
 import com.fhk.sample.common.module.SessionManager;
 import com.fhk.sample.domain.dao.ChequeRepository;
 import com.fhk.sample.domain.dao.ContractRepository;
+import com.fhk.sample.domain.entity.Book;
 import com.fhk.sample.domain.entity.Cheque;
 import com.fhk.sample.domain.entity.Contract;
 import com.fhk.sample.domain.entity.User;
 import com.fhk.sample.domain.vo.PageVO;
 import com.fhk.sample.service.ContractService;
 import com.fhk.sample.util.BizAssert;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Service("contractService")
@@ -28,6 +34,11 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public PageVO<Contract> queryPage(Map<String, Object> params) {
         return null;
+    }
+
+    @Override
+    public List<Contract> listByUsername(String username) {
+        return contractRepository.findAll(getSpecification(username));
     }
 
     @Override
@@ -51,5 +62,15 @@ public class ContractServiceImpl implements ContractService {
         Cheque cheque = chequeRepository.findByContractNumber(contract.getContractNumber());
         cheque.setStatus(ContractStatus.VOID);
         chequeRepository.save(cheque);
+    }
+
+    private Specification<Contract> getSpecification(String username) {
+        return (root, cq, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (StringUtils.isNotBlank(username)) {
+                predicates.add(cb.equal(root.get("username"), username));
+            }
+            return cb.and(predicates.toArray(new Predicate[0]));
+        };
     }
 }

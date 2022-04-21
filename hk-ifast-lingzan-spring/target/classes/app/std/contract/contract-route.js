@@ -7,17 +7,17 @@
 
 	function config($stateProvider, $urlRouterProvider)
 	{
-		$urlRouterProvider.otherwise('/author');
-		$stateProvider.state('author',
+		$urlRouterProvider.otherwise('/contract');
+		$stateProvider.state('contract',
 			{
-				url: '/author',
+				url: '/contract',
 				views:
 					{
 						'header': { templateUrl: _applicationPath + '/template/header.htm' },
 						'footer': { templateUrl: _applicationPath + '/template/footer.htm' },
 						'content' :
 							{
-								templateUrl: _applicationPath + '/author/author.html',
+								templateUrl: _applicationPath + '/contract/contract.html',
 							}
 					},
 			});
