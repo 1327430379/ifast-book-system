@@ -1,0 +1,134 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+    <script src="account-controller.js"></script>
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css"
+          integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            crossorigin="anonymous"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <style>
+
+    </style>
+</head>
+
+<body>
+<div class="container-fluid">
+    <div ng-app="account" ng-controller="accountController" ng-init="listAllAccount()">
+        <h1>
+            <center>账户管理</center>
+        </h1>
+
+        <!--账户表格-->
+        <table class="table  table-hover" id="account-table">
+            <thead>
+            <td style="display: none">id</td>
+            <td>用户名</td>
+            <td>状态</td>
+            <td>审批人</td>
+            </thead>
+            <tr ng-repeat="x in accountList" ng-click="queryTransRecord(x.id)">
+                <td style="display: none">{{x.id}}</td>
+                <td>{{x.username}}</td>
+                <td>{{x.status}}</td>
+                <td>{{x.approvedBy}}</td>
+                <td>
+                    <!-- 编辑功能的edit()方法，还在listController 里面设置的-->
+                    <a class="btn btn-sm btn-primary" role="button" ng-click="showAddWindow();getById(x.id)"
+                       data-toggle="modal"
+                       data-target="#exampleModal">编辑</a>
+                    <a class="btn btn-sm btn-primary" role="button" ng-click="remove(x.id)">删除</a>
+                </td>
+            </tr>
+        </table>
+        <!--        流水记录表格-->
+        <table class="table  table-hover" id="trans-record-table">
+            <thead>
+            <td style="display: none">id</td>
+            <td>交易流水号</td>
+            <td>用户</td>
+            <td>交易金额</td>
+            <td>状态</td>
+            <td>备注</td>
+            </thead>
+            <tr ng-repeat="x in transRecordList" ng-click="alert('wq')">
+                <td style="display: none">{{x.id}}</td>
+                <td>{{x.transNumber}}</td>
+                <td>{{x.username}}</td>
+                <td>{{x.amount}}</td>
+                <td>{{x.status}}</td>
+                <td>{{x.createdDate}}</td>
+                <td>
+                    <!-- 编辑功能的edit()方法，还在listController 里面设置的-->
+                    <a class="btn btn-sm btn-primary" role="button" ng-click="showAddWindow();getTransRecordById(x.id)"
+                       data-toggle="modal"
+                       data-target="#exampleModal">编辑</a>
+                    <a class="btn btn-sm btn-primary" role="button" ng-click="removeTransRecord(x.id)">删除</a>
+                </td>
+            </tr>
+        </table>
+        <div>
+            <center>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
+                        ng-click="categoryModel={};showAddWindow()">添加
+                </button>
+            </center>
+        </div>
+
+
+        <!-- 流水表单 Modal -->
+        <div class="modal-dialog" id="modal-window">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">充值</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addCategoryForm">
+                        <input type="hidden" value="{{transRecordModel.id}}" class="form-control" id="transRecordId"
+                               ng-model="transRecordModel.id">
+
+                        <div class="form-group">
+                            <label for="transRecordAmount">金额</label>
+                            <input type="text" class="form-control" id="transRecordAmount"
+                                   value="{{transRecordModel.amount}}" ng-model="transRecordModel.amount">
+                        </div>
+                        <div class="form-group">
+                            <label for="transRecordRemarks">备注</label>
+                            <input type="text" class="form-control" id="transRecordRemarks"
+                                   ng-model="transRecordModel.remarks">
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                    ng-click="hideAddWindow()">关闭
+                            </button>
+                            <button type="button" class="btn btn-primary" ng-click="saveTransRecord(transRecordModel)"
+                                    data-dismiss="modal">
+                                保存
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

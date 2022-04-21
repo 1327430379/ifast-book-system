@@ -1,0 +1,142 @@
+<head>
+
+    <meta charset="UTF-8">
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css"
+          integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            crossorigin="anonymous"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="../user/user-controller.js"></script>
+</head>
+
+<h1>Sample Application</h1>
+<div ng-controller="userController">
+    <button type="button" class="btn btn-slave" ng-click="showRegisterUserWindow()">注册</button>
+    <button type="button" class="btn btn-primary" ng-click="showLoginWindow('moderator')">版主登录</button>
+    <button type="button" class="btn btn-primary" ng-click="showLoginWindow('customer')">普通用户登录</button>
+    <button type="button" class="btn btn-danger" ng-click="logout()"> 注销</button>
+</div>
+<a href="#/home">Home</a>&nbsp;
+<a href="#/page/a">PageA</a>
+<a href="#/page/b">PageB</a>
+<a href="#/author">Author</a>
+<a href="#/category">Category</a>
+<a href="#/cheque">Cheque</a>
+<a href="#/publisher">Publisher</a>
+<a href="#/book">Book</a>
+<a href="#/publisher">Publisher</a>
+<a href="#/account">Account</a>
+<a href="#/user">User</a>
+
+
+<div ng-controller="userController">
+    <!--    注册窗口-->
+    <div class="modal-dialog" id="modal-register" style="display: none">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">注册用户</h5>
+                <button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close"
+                        onclick="style='display:none'">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="registerUserForm">
+                    <input type="hidden" value="customer" class="form-control"
+                           ng-model="userModel.role">
+
+                    <div class="form-group">
+                        <label for="username">用户名</label>
+                        <input type="text" class="form-control" id="username" aria-describedby="emailHelp"
+                               ng-model="userModel.username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">密码</label>
+                        <input type="password" class="form-control" id="password" ng-model="userModel.password">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">确认密码</label>
+                        <input type="password" class="form-control" id="confirmPassword" ng-model="userModel.confirmPassword">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">姓名</label>
+                        <input type="text" class="form-control" id="name" ng-model="userModel.name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">邮箱</label>
+                        <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
+                               ng-model="userModel.email">
+                    </div>
+                    <div class="form-group">
+                        <label for="telephone">电话</label>
+                        <input type="number" class="form-control" id="telephone" ng-model="userModel.telephone">
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile">手机号</label>
+                        <input type="number" class="form-control" id="mobile" ng-model="userModel.mobile">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">地址</label>
+                        <input type="text" class="form-control" id="address" ng-model="userModel.address">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal"
+                                ng-click="hideRegisterUserWindow()">关闭
+                        </button>
+                        <button type="button" class="btn btn-primary" ng-click="register(userModel)" data-dismiss="modal">
+                            注册
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <!--    登录窗口-->
+    <div class="modal-dialog" id="modal-login" style="display: none">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginTitle">登录</h5>
+                <button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close"
+                        onclick="style='display:none'">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="loginUserForm">
+                    <input type="hidden" value="{{authorModel.id}}" class="form-control" ng-model="loginUser.role">
+
+                    <div class="form-group">
+                        <label for="username">用户名</label>
+                        <input type="text" class="form-control" ng-model="loginUser.username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">密码</label>
+                        <input type="password" class="form-control" ng-model="loginUser.password">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal"
+                                ng-click="hideLoginWindow()">关闭
+                        </button>
+                        <button type="button" class="btn btn-primary" ng-click="login(loginUser)">
+                            登录
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+

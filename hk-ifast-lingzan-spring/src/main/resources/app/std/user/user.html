@@ -1,0 +1,127 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+    <script src="user-controller.js"></script>
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <style>
+
+    </style>
+</head>
+
+<body>
+<div class="container-fluid">
+    <div ng-app="user" ng-controller="userController" ng-init="listAll()">
+        <h1>
+            <center>用户列表</center>
+        </h1>
+
+
+        <table class="table  table-hover">
+            <thead>
+            <td style="display: none">id</td>
+            <td>用戶名</td>
+            <td>姓名</td>
+            <td>邮箱</td>
+            <td>电话</td>
+            <td>手机号</td>
+            <td>地址</td>
+            <td>启用状态</td>
+            <td>状态</td>
+            <td>创建日期</td>
+            <td>审批日期</td>
+            <td>更新日期</td>
+            <td>审批人</td>
+            <td>阅读次数</td>
+            <td>上次登录日期</td>
+            </thead>
+            <tr ng-repeat="x in userList" ng-click="alert('wq')">
+                <td style="display: none">{{x.id}}</td>
+                <td>{{x.username}}</td>
+                <td>{{x.name}}</td>
+                <td>{{x.email}}</td>
+                <td>{{x.telephone}}</td>
+                <td>{{x.mobile}}</td>
+                <td>{{x.address}}</td>
+                <td>{{x.status == 1 ? '启用' : '禁用'}}</td>
+                <td>{{x.approveStatus}}</td>
+                <td>{{x.createdDate}}</td>
+                <td>{{x.approvedDate}}</td>
+                <td>{{x.updatedDate}}</td>
+                <td>{{x.approvedBy}}</td>
+                <td>{{x.numberOfRetries}}</td>
+                <td>{{x.lastLoginDate}}</td>
+                <td>
+                    <!-- 编辑功能的edit()方法，还在listController 里面设置的-->
+                    <a class="btn btn-sm btn-primary" role="button" ng-click="getById(x.id)" data-toggle="modal"
+                       data-target="#exampleModal">编辑</a>
+                    <a class="btn btn-sm btn-primary" role="button" ng-click="remove(x.id)"
+                       ng-show="x.username!='system'">删除</a>
+                    <a class="btn btn-sm btn-primary" role="button" ng-click="updateStatus(x.id,x.status)"
+                       ng-show="x.username!='system'">{{x.status == 1 ? '禁用' : '启用'}}</a>
+                    <a class="btn btn-sm btn-primary" role="button" ng-click="approve(x.id)"
+                       ng-show="x.approveStatus==='pending'">审批</a>
+                </td>
+            </tr>
+        </table>
+
+
+        <!-- 添加作者表单 Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">修改用户</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="adduserForm" ng-submit="save(userModel)">
+                            <input type="hidden" value="{{userModel.id}}" class="form-control" id="userId"
+                                   aria-describedby="emailHelp" ng-model="userModel.id">
+
+                            <div class="form-group">
+                                <label for="userName">姓名</label>
+                                <input type="text" class="form-control" id="userName" aria-describedby="emailHelp"
+                                       value="{{userModel.name}}" ng-model="userModel.name">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="userEmail">邮箱</label>
+                                <input type="email" class="form-control" required placeholder="不能为空" id="userEmail"
+                                       ng-model="userModel.email">
+                            </div>
+                            <div class="form-group">
+                                <label for="userTelephone">手机号</label>
+                                <input type="text" class="form-control" id="userTelephone"
+                                       ng-model="userModel.telephone">
+                            </div>
+                            <div class="form-group">
+                                <label for="userAddress">地址</label>
+                                <input type="text" class="form-control" id="userAddress" ng-model="userModel.address">
+                            </div>
+                            <button type="submit" class="btn btn-primary" data-dismiss="modal">保存</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

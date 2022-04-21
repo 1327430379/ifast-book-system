@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Thu Apr 21 13:21:57 CST 2022:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0180-4a91-e6b7-000012623960 
+on database directory Z:\code\book_system\hk-ifast-lingzan-spring\local.test.db with class loader sun.misc.Launcher$AppClassLoader@18b4aac2 
+Loaded from file:/C:/mvn_repository/org/apache/derby/derby/10.12.1.1/derby-10.12.1.1.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_101-b13
+user.dir=Z:\code\book_system\hk-ifast-lingzan-spring
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
