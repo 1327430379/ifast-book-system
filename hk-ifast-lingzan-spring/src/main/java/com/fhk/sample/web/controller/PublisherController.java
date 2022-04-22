@@ -5,6 +5,7 @@ import com.fhk.sample.domain.dto.PublisherDTO;
 import com.fhk.sample.domain.entity.Publisher;
 import com.fhk.sample.domain.vo.PageVO;
 import com.fhk.sample.service.PublisherService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,7 @@ public class PublisherController extends BaseController {
     /**
      * 分页列表
      */
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/page",method = RequestMethod.GET)
     public RestResponse<PageVO<Publisher>> queryByPage(@RequestParam(name = "pageNum", defaultValue = "1", required = false) Integer pageNum,
                                                        @RequestParam(name = "pageSize", defaultValue = "20", required = false) Integer pageSize) {
@@ -36,6 +38,7 @@ public class PublisherController extends BaseController {
     /**
      * 列表
      */
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public RestResponse<List<Publisher>> listAll() {
         return RestResponse.success(publisherService.listAll());
@@ -53,6 +56,7 @@ public class PublisherController extends BaseController {
     /**
      * 添加
      */
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     public RestResponse<Publisher> add(@RequestBody @Validated(value = PublisherDTO.InsertGroup.class) PublisherDTO publisher) {
         return RestResponse.success(publisherService.add(this.convert(publisher, Publisher.class)));
@@ -61,6 +65,7 @@ public class PublisherController extends BaseController {
     /**
      * 修改
      */
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/update",method = RequestMethod.POST)
     public RestResponse<Publisher> update(@RequestBody @Validated(value = PublisherDTO.UpdateGroup.class) PublisherDTO publisher) {
         return RestResponse.success(publisherService.update(this.convert(publisher, Publisher.class)));
@@ -69,6 +74,7 @@ public class PublisherController extends BaseController {
     /**
      * 删除
      */
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/delete/{id}",method = RequestMethod.DELETE)
     public RestResponse<Void> delete(@PathVariable("id") Integer id) {
         publisherService.deleteById(id);

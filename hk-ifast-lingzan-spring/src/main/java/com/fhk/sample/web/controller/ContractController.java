@@ -5,6 +5,7 @@ import com.fhk.sample.common.rest.RestResponse;
 import com.fhk.sample.domain.entity.Contract;
 import com.fhk.sample.domain.vo.PageVO;
 import com.fhk.sample.service.ContractService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,7 @@ public class ContractController {
     /**
      * 列表
      */
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public RestResponse<List<Contract>> listByUsername(@RequestParam(name = "username", required = false) String username) {
         return RestResponse.success(contractService.listByUsername(username));
@@ -44,6 +46,8 @@ public class ContractController {
     /**
      * 添加
      */
+
+
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public RestResponse<Contract> save(@RequestBody Contract contract) {
         return RestResponse.success(null);
@@ -52,6 +56,7 @@ public class ContractController {
     /**
      * 修改
      */
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public RestResponse<Contract> update(@RequestBody @Validated Contract contract) {
         return RestResponse.success(null);
@@ -60,12 +65,13 @@ public class ContractController {
     /**
      * 删除
      */
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public RestResponse<Void> delete(@PathVariable("id") Integer ids) {
         return RestResponse.VOID;
     }
 
-
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/void", method = RequestMethod.POST)
     public RestResponse<Void> voiding(@RequestParam("id") Integer id) {
         contractService.voiding(id);

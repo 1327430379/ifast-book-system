@@ -3,26 +3,33 @@ package com.fhk.sample.domain.dto;
 import com.fhk.sample.domain.entity.User;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class LoginUser implements UserDetails {
 
-    private  User user;
+    private User user;
+
+    private String role;
 
     public User getUser() {
         return user;
     }
 
-    public LoginUser(User user) {
+    public LoginUser(User user,String role) {
         this.user = user;
     }
 
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<GrantedAuthority> roles = new ArrayList<>();
+        GrantedAuthority authority = new SimpleGrantedAuthority(role);
+        roles.add(authority);
+        return roles;
     }
 
     @Override

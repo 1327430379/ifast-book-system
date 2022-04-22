@@ -4,6 +4,7 @@ package com.fhk.sample.web.controller;
 import com.fhk.sample.common.rest.RestResponse;
 import com.fhk.sample.domain.entity.Account;
 import com.fhk.sample.service.AccountService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -26,6 +27,7 @@ public class AccountController extends BaseController{
     /**
      * 列表
      */
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public RestResponse<List<Account>> list(){
         return RestResponse.success(accountService.list());

@@ -9,6 +9,7 @@ import com.fhk.sample.service.BookService;
 import com.fhk.sample.service.UploadService;
 import com.fhk.sample.util.BizAssert;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -86,6 +87,7 @@ public class BookController extends BaseController {
     /**
      * 保存
      */
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/add",method = RequestMethod.POST,consumes = MediaType.MULTIPART_FORM_DATA_VALUE,headers = {"Accept=application/json"})
     public RestResponse<Book> add(
             @RequestParam("file")MultipartFile file,
@@ -99,6 +101,7 @@ public class BookController extends BaseController {
     /**
      * 修改
      */
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/update",method = RequestMethod.POST,consumes = MediaType.MULTIPART_FORM_DATA_VALUE,headers = {"Accept=application/json"})
     public RestResponse<Book> update(
             @RequestParam("file")MultipartFile file,

@@ -4,6 +4,7 @@ import com.fhk.sample.common.rest.RestResponse;
 import com.fhk.sample.domain.dto.CategoryDTO;
 import com.fhk.sample.domain.entity.Category;
 import com.fhk.sample.service.CategoryService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,7 @@ public class CategoryController extends BaseController {
     /**
      * 列表
      */
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public RestResponse<List<Category>> listAll(@RequestParam(name = "name", required = false) String name) {
         return RestResponse.success(categoryService.list(name));
@@ -45,6 +47,7 @@ public class CategoryController extends BaseController {
     /**
      * 保存
      */
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     public RestResponse<Category> add(@RequestBody @Validated(value = CategoryDTO.InsertGroup.class) CategoryDTO category) {
         return RestResponse.success(categoryService.add(this.convert(category, Category.class)));
@@ -53,6 +56,7 @@ public class CategoryController extends BaseController {
     /**
      * 修改
      */
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/update",method = RequestMethod.POST)
     public RestResponse<Category> update(@RequestBody @Validated(value = CategoryDTO.UpdateGroup.class) CategoryDTO category) {
         return RestResponse.success(categoryService.update(this.convert(category, Category.class)));
@@ -61,6 +65,7 @@ public class CategoryController extends BaseController {
     /**
      * 删除
      */
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/delete/{id}",method = RequestMethod.DELETE)
     public RestResponse<Void> delete(@PathVariable("id") Integer id) {
         categoryService.deleteById(id);

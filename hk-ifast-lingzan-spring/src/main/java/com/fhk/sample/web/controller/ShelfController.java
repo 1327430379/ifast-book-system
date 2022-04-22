@@ -12,6 +12,7 @@ import com.fhk.sample.service.ShelfService;
 import com.fhk.sample.service.impl.PDFReader;
 import com.fhk.sample.service.impl.TXTReader;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +41,7 @@ public class ShelfController extends BaseController {
     /**
      * 分页列表
      */
+    @PreAuthorize("hasAuthority('customer')")
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     @ResponseBody
     public RestResponse<PageVO<Shelf>> queryByPage() {
@@ -49,6 +51,7 @@ public class ShelfController extends BaseController {
     /**
      * 列表
      */
+    @PreAuthorize("hasAuthority('customer')")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public RestResponse<List<Shelf>> list() {
@@ -69,6 +72,7 @@ public class ShelfController extends BaseController {
     /**
      * 删除
      */
+    @PreAuthorize("hasAuthority('customer')")
     @RequestMapping(value = "/delete/id", method = RequestMethod.DELETE)
     @ResponseBody
     public RestResponse<Void> delete(@PathVariable("id") Integer id) {

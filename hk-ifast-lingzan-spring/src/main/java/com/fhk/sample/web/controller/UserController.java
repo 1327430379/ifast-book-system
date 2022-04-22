@@ -9,6 +9,8 @@ import com.fhk.sample.domain.entity.User;
 import com.fhk.sample.domain.vo.PageVO;
 import com.fhk.sample.service.UserService;
 import com.fhk.sample.util.BizAssert;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +45,8 @@ public class UserController extends BaseController {
     /**
      * 列表
      */
+
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public RestResponse<PageVO<User>> list(@RequestParam(name = "pageNum", defaultValue = "0", required = false) Integer pageNum,
                                            @RequestParam(name = "pageSize", defaultValue = "20", required = false) Integer pageSize,
@@ -73,6 +77,8 @@ public class UserController extends BaseController {
     /**
      * 修改
      */
+
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value="/update",method = RequestMethod.POST)
     public RestResponse<User> update(@RequestBody @Validated(value = UserDTO.UpdateGroup.class) UserDTO user) {
         return RestResponse.success(userService.updateById(this.convert(user, User.class)));
@@ -81,6 +87,7 @@ public class UserController extends BaseController {
     /**
      * 删除
      */
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/delete/{id}",method = RequestMethod.DELETE)
     public RestResponse<Void> delete(@PathVariable("id") Integer id) {
         userService.delete(id);
@@ -93,6 +100,7 @@ public class UserController extends BaseController {
      * @param id
      * @return
      */
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/status/update",method = RequestMethod.POST)
     public RestResponse<Void> updateStatus(@RequestParam("id") Integer id,
                                            @RequestParam("status") Integer status) {
@@ -106,6 +114,7 @@ public class UserController extends BaseController {
      * @param id
      * @return
      */
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/approve",method = RequestMethod.POST)
     public RestResponse<Void> approve(@RequestParam("id") Integer id) {
         userService.approve(id);
@@ -140,6 +149,7 @@ public class UserController extends BaseController {
 
     @RequestMapping(value = "/current/user",method = RequestMethod.GET)
     public RestResponse<Object> getCurrentSession() {
+        SecurityContextHolder.clearContext();
         return RestResponse.success(SessionManager.getCurrentUserSession());
     }
 

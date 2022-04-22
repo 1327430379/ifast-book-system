@@ -5,6 +5,7 @@ import com.fhk.sample.common.rest.RestResponse;
 import com.fhk.sample.domain.entity.Author;
 import com.fhk.sample.domain.vo.PageVO;
 import com.fhk.sample.service.AuthorService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,7 @@ public class AuthorController extends BaseController {
     /**
      * 分页
      */
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/page",method = RequestMethod.GET)
     public RestResponse<PageVO<Author>> queryByPage(@RequestParam(name = "pageNum", defaultValue = "0", required = false) Integer pageNum,
                                                     @RequestParam(name = "pageSize", defaultValue = "20", required = false) Integer pageSize,
@@ -40,6 +42,7 @@ public class AuthorController extends BaseController {
     /**
      * 列表
      */
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public RestResponse<List<Author>> listAll() {
         return RestResponse.success(authorService.listAll());
@@ -58,6 +61,7 @@ public class AuthorController extends BaseController {
     /**
      * 添加
      */
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     public RestResponse<Author> add(@RequestBody @Validated Author author) {
         return RestResponse.success(authorService.add(author));
@@ -66,6 +70,7 @@ public class AuthorController extends BaseController {
     /**
      * 修改
      */
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/update",method = RequestMethod.POST)
     public RestResponse<Author> update(@RequestBody @Validated Author author) {
         return RestResponse.success(authorService.update(author));
@@ -74,6 +79,7 @@ public class AuthorController extends BaseController {
     /**
      * 删除
      */
+    @PreAuthorize("hasAuthority('moderator')")
     @RequestMapping(value = "/delete/{id}",method = RequestMethod.DELETE)
     public RestResponse<Void> delete(@PathVariable("id") Integer id) {
         authorService.deleteById(id);
