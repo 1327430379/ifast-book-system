@@ -23,7 +23,7 @@ public interface UserService {
 
     void updateStatus(Integer id, Integer status);
 
-    User login(String username, String password, String role);
+    User login(User user);
 
     void logout(String username);
 

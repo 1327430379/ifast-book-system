@@ -11,13 +11,17 @@
     <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
 
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 
     <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css"
+          integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
 
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            crossorigin="anonymous"></script>
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
 
     </style>
@@ -25,28 +29,31 @@
 
 <body>
 <div class="container-fluid">
-    <div ng-app="book" ng-controller="bookController" ng-init="listAll()">
+    <div ng-app="std.app" ng-controller="bookController" ng-init="init();listAll()">
         <h1>
-            <center>书籍管理</center>
+            <center>书籍库存管理</center>
         </h1>
 
 
         <table class="table  table-hover">
             <thead>
             <td style="display: none">id</td>
-            <td>Subject</td>
-            <td>Description</td>
+            <td>学科</td>
+            <td>文件类型</td>
+            <td>描述</td>
             <td>ISBN</td>
-            <td>Author</td>
-            <td>Category</td>
-            <td>Publisher</td>
-            <td>Created Date</td>
-            <td>Price</td>
+            <td>作者</td>
+            <td>分类</td>
+            <td>出版社</td>
+            <td>创建日期</td>
+            <td>价格</td>
+            <td>库存</td>
             <td>操作</td>
             </thead>
             <tr ng-repeat="x in bookList" ng-click="alert('wq')">
                 <td style="display: none">{{x.id}}</td>
                 <td>{{x.subject}}</td>
+                <td>{{x.contentType}}</td>
                 <td>{{x.description}}</td>
                 <td>{{x.isbn}}</td>
                 <td>{{x.author}}</td>
@@ -54,11 +61,12 @@
                 <td>{{x.publisher}}</td>
                 <td>{{x.createdDate}}</td>
                 <td>{{x.price | number:'2'}}</td>
+                <td>{{x.stock}}</td>
                 <td>
+
                     <!-- 编辑功能的edit()方法，还在listController 里面设置的-->
-                    <a class="btn btn-sm btn-primary" role="button" ng-click="getById(x.id)" data-toggle="modal"
-                       data-target="#exampleModal">编辑</a>
-                    <a class="btn btn-sm btn-primary" role="button" ng-click="remove(x.id)">删除</a>
+                    <a class="btn btn-sm btn-primary" role="button" ng-click="showAddWindow();getById(x.id)"
+                       data-toggle="modal">编辑</a>
                     <a class="btn btn-sm btn-primary" role="button" ng-click="remove(x.id)">删除</a>
                 </td>
             </tr>
@@ -66,7 +74,7 @@
         <div>
             <center>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
-                        ng-click="bookModel={}">添加书籍
+                        ng-click="bookModel={};showAddWindow()">添加书籍
                 </button>
 
             </center>
@@ -74,84 +82,86 @@
 
 
         <!-- 添加作者表单 Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">添加作者</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="addBookForm" enctype="multipart/form-data" >
-                            <input type="hidden" value="{{bookModel.id}}" class="form-control" id="authorId"
-                                   aria-describedby="emailHelp" ng-model="bookModel.id">
-
-                            <div class="form-group">
-                                <label for="bookName">Subject</label>
-                                <input type="text" class="form-control" id="bookName" aria-describedby="emailHelp"
-                                       value="{{bookModel.name}}" ng-model="bookModel.name">
-                            </div>
-                            <div class="form-group">
-                                <label for="bookDescription">Description</label>
-                                <input type="text" class="form-control" id="bookDescription"
-                                       ng-model="bookModel.description">
-                            </div>
-                            <div class="form-group">
-                                <label for="bookDescription">ISBN</label>
-                                <input type="text" class="form-control" id="bookISBN" ng-model="bookModel.ISBN">
-                            </div>
-                            <div class="form-group">
-                                <label for="bookDescription">Category</label>
-                                <select class="form-control" ng-init="listAllCategory()">
-                                    <option ng-repeat="item in categoryList" ng-value="item.name" ng-model="item.name">
-                                        {{item.name}}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="bookDescription">Author</label>
-                                <select class="form-control" ng-init="listAllAuthor()">
-                                    <option ng-repeat="item in authorList" ng-value="item.name" ng-model="item.name">
-                                        {{item.name}}
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="bookPrice">price</label>
-                                <input type="number" class="form-control" id="bookPrice" ng-model="bookModel.price">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="bookDescription">Publisher</label>
-                                <select class="form-control" ng-init="listAllPublisher()">
-                                    <option ng-repeat="item in publisherList" ng-value="item.name" ng-model="bookModel.publisher">
-                                        {{item.name}}
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="bookDescription">Type</label>
-                                <select class="form-control" ng-model="bookModel.type">
-                                    <option value="pdf" ng-model="bookModel.type">PDF</option>
-                                    <option value="txt" ng-model="bookModel.type">TXT</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="file">选择文件</label>
-                                <input type="file" class="form-control-file" id="file" ng-model="bookModel.filePath">
-                            </div>
-                            <button type="submit" class="btn btn-primary" ng-click="saveBook(bookModel)" data-dismiss="modal">添加</button>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="bookModel={}">关闭</button>
-                    </div>
+        <div class="modal-dialog" id="modal-window">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">添加书籍</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            ng-click="hideAddWindow()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
+                <div class="modal-body">
+                    <form id="addBookForm" enctype="multipart/form-data">
+                        <input type="hidden" value="{{bookModel.id}}" class="form-control" id="authorId"
+                               aria-describedby="emailHelp" ng-model="bookModel.id">
+
+                        <div class="form-group">
+                            <label for="bookName">Subject</label>
+                            <input type="text" class="form-control" id="bookName" aria-describedby="emailHelp"
+                                   value="{{bookModel.subject}}" ng-model="bookModel.subject">
+                        </div>
+                        <div class="form-group">
+                            <label for="bookDescription">Description</label>
+                            <input type="text" class="form-control" id="bookDescription"
+                                   ng-model="bookModel.description">
+                        </div>
+                        <div class="form-group">
+                            <label for="bookDescription">ISBN</label>
+                            <input type="text" class="form-control" id="bookISBN" ng-model="bookModel.isbn">
+                        </div>
+                        <div class="form-group">
+                            <label for="bookDescription">Category</label>
+                            <select  ng-init="listAllCategory()" ng-value="bookModel.category"
+                                    ng-model="bookModel.category">
+                                <option ng-repeat="item in categoryList">{{item.name}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="bookDescription">Author</label>
+                            <select  ng-init="listAllAuthor()" ng-value="bookModel.author"
+                                    ng-model="bookModel.author">
+                                <option ng-repeat="item in authorList">{{item.name}}</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bookDescription">Publisher</label>
+                            <select  ng-init="listAllPublisher()" ng-model="bookModel.publisher"
+                                    ng-value="bookModel.publisher">
+                                <option ng-repeat="item in publisherList">{{item.name}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="bookPrice">price</label>
+                            <input type="number" class="form-control" id="bookPrice" ng-model="bookModel.price">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="bookDescription">Type</label>
+                            <select class="form-control" ng-model="bookModel.type">
+                                <option value="pdf" ng-model="bookModel.type" ng-options="bookModel.type">PDF</option>
+                                <option value="txt" ng-model="bookModel.type" ng-options="bookModel.type">TXT</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="file">选择文件</label>
+                            <input type="file" class="form-control-file" id="file" ng-model="bookModel.filePath">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" ng-click="saveBook(bookModel)"
+                                    data-dismiss="modal">添加
+                            </button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                    ng-click="bookModel:{};hideAddWindow()">关闭
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>

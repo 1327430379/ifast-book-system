@@ -1,5 +1,6 @@
 package com.fhk.sample.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -79,14 +80,17 @@ public class Contract implements Serializable {
 	/**
 	 * 作废日期
 	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date voidedDate;
 	/**
 	 * 创建日期
 	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createdDate;
 	/**
 	 * 更新日期
 	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date updatedDate;
 
 }

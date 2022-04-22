@@ -23,7 +23,7 @@
 
 <body>
 <div class="container-fluid">
-    <div ng-app="user" ng-controller="userController" ng-init="listAll()">
+    <div ng-app="std.app" ng-controller="userController" ng-init="listAll()">
         <h1>
             <center>用户列表</center>
         </h1>
@@ -65,7 +65,7 @@
                 <td>{{x.lastLoginDate}}</td>
                 <td>
                     <!-- 编辑功能的edit()方法，还在listController 里面设置的-->
-                    <a class="btn btn-sm btn-primary" role="button" ng-click="getById(x.id)" data-toggle="modal"
+                    <a class="btn btn-sm btn-primary" role="button" ng-click="showEditUserWindow();getById(x.id)" data-toggle="modal"
                        data-target="#exampleModal">编辑</a>
                     <a class="btn btn-sm btn-primary" role="button" ng-click="remove(x.id)"
                        ng-show="x.username!='system'">删除</a>
@@ -78,8 +78,8 @@
         </table>
 
 
-        <!-- 添加作者表单 Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- 添加用户表单 Modal -->
+        <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -90,31 +90,31 @@
                     </div>
                     <div class="modal-body">
                         <form id="adduserForm" ng-submit="save(userModel)">
-                            <input type="hidden" value="{{userModel.id}}" class="form-control" id="userId"
+                            <input type="hidden" value="userModel.id" class="form-control" id="userId"
                                    aria-describedby="emailHelp" ng-model="userModel.id">
 
                             <div class="form-group">
                                 <label for="userName">姓名</label>
                                 <input type="text" class="form-control" id="userName" aria-describedby="emailHelp"
-                                       value="{{userModel.name}}" ng-model="userModel.name">
+                                       value="userModel.name" ng-model="userModel.name">
                             </div>
 
                             <div class="form-group">
                                 <label for="userEmail">邮箱</label>
-                                <input type="email" class="form-control" required placeholder="不能为空" id="userEmail"
+                                <input type="email" class="form-control" required placeholder="不能为空" id="userEmail" value="userModel.email"
                                        ng-model="userModel.email">
                             </div>
                             <div class="form-group">
                                 <label for="userTelephone">手机号</label>
-                                <input type="text" class="form-control" id="userTelephone"
+                                <input type="text" class="form-control" id="userTelephone" value="userModel.telephone"
                                        ng-model="userModel.telephone">
                             </div>
                             <div class="form-group">
                                 <label for="userAddress">地址</label>
-                                <input type="text" class="form-control" id="userAddress" ng-model="userModel.address">
+                                <input type="text" class="form-control" id="userAddress" value="userModel.address" ng-model="userModel.address">
                             </div>
                             <button type="submit" class="btn btn-primary" data-dismiss="modal">保存</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="hideEditUserWindow()">关闭</button>
                         </form>
                     </div>
 

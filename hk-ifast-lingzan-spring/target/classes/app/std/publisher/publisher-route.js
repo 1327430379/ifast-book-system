@@ -17,7 +17,7 @@
 						'footer': { templateUrl: _applicationPath + '/template/footer.htm' },
 						'content' :
 							{
-								templateUrl: _applicationPath + '/publisher/contract.html',
+								templateUrl: _applicationPath + '/publisher/publisher.html',
 							}
 					},
 			});

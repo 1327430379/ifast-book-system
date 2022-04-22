@@ -54,6 +54,7 @@ public class CashPaymentServiceImpl implements PaymentService {
         Contract contract = Contract.builder()
                 .status(ContractStatus.APPROVED)
 //                .transRecord(transRecord)
+                .bookId(book.getId())
                 .transNumber(transRecord.getTransNumber())
                 .transId(transRecord.getId())
                 .amount(transRecord.getAmount())

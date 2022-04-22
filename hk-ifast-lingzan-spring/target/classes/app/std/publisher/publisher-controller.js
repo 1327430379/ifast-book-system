@@ -1,8 +1,9 @@
 'use strict';
 var app = angular.module('std.app');
-app.controller('publisherController', function ($scope, $http) {
-
-
+app.controller('publisherController', function ($scope, $http,$rootScope) {
+    //
+    // $scope.loginUser = {role: '', username: '', password: ''};
+    // $rootScope.currentUserSession = {role:'guest',username:'',auth:''};
     $scope.showAddWindow = function () {
         document.getElementById('modal-window').style.display = 'block';
     }
@@ -21,6 +22,8 @@ app.controller('publisherController', function ($scope, $http) {
     };
 
     $scope.save = function (publisher) {
+        console.log('去除空格前：'+publisher.author);
+        console.log('去除空格后：'+publisher.author);
         console.log("请求参数：" + JSON.stringify(publisher));
         var url = "";
         if (publisher.id != null) {

@@ -116,24 +116,15 @@ public class UserController extends BaseController {
     /**
      * 登录
      *
-     * @param username
-     * @param password
      * @return
      */
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public RestResponse<Void> login(@RequestParam("username") String username,
-                                    @RequestParam("password") String password,
-                                    @RequestParam("role") String role) {
-        BizAssert.isTrue(isValidRole(role), "不存在该角色操作权限");
-        try {
-            userService.login(username, password, role);
-        } catch (BusinessException e) {
-//            if (ExceptionCode.PASSWORD_INPUT_ERROR.getCode().equals(e.getCode())) {
-//                userService.incrRetries(username);
-//            }
-            return RestResponse.fail(e.getCode(), e.getMessage());
-        }
-        return RestResponse.VOID;
+    public RestResponse<User> login(@RequestBody User user) {
+        BizAssert.isNotNull(user.getRole(),"角色不能为空");
+        BizAssert.isNotNull(user.getUsername(),"用户名不能为空");
+        BizAssert.isNotNull(user.getPassword(),"密码不能为空");
+        BizAssert.isTrue(isValidRole(user.getRole()), "不存在该角色操作权限");
+        return RestResponse.success( userService.login(user));
     }
 
     /**

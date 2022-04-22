@@ -99,9 +99,12 @@ public class BookController extends BaseController {
     /**
      * 修改
      */
-    @RequestMapping(value = "/update",method = RequestMethod.POST)
-    public RestResponse<Book> update(@RequestBody @Validated BookDTO book) {
-        CommonsMultipartFile commonsMultipartFile = null;
+    @RequestMapping(value = "/update",method = RequestMethod.POST,consumes = MediaType.MULTIPART_FORM_DATA_VALUE,headers = {"Accept=application/json"})
+    public RestResponse<Book> update(
+            @RequestParam("file")MultipartFile file,
+           BookDTO book) {
+        String filePath = uploadService.upload(file);
+        book.setPath(filePath);
         return RestResponse.success(bookService.update(this.convert(book, Book.class)));
 
     }

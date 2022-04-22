@@ -1,7 +1,15 @@
 'use strict';
 var app = angular.module('std.app');
-app.controller('accountController', function ($scope, $http) {
 
+app.controller('userAccountController', function ($scope, $http,$rootScope) {
+
+    $scope.currnetSelectId = null;
+    $scope.transRecordModel = {id: '', amount: '', remarks: ''};
+    // $scope.loginUser = {role: '', username: '', password: ''};
+    // $rootScope.currentUserSession = {role:'guest',username:'',auth:''};
+    $scope.init = function () {
+        console.log($rootScope.currentUserAuth)
+    };
 
     $scope.showAddWindow = function () {
         document.getElementById('modal-window').style.display = 'block';
@@ -22,7 +30,8 @@ app.controller('accountController', function ($scope, $http) {
 
 
     $scope.queryTransRecord = function (accountId) {
-        alert('查询流水记录：accountId:' + accountId);
+        $scope.transRecordModel.id = accountId;
+        $scope.currnetSelectId = accountId;
         $scope.hideAddWindow();
         $http({
             method: "GET",
@@ -35,11 +44,26 @@ app.controller('accountController', function ($scope, $http) {
 
     $scope.saveTransRecord = function (transRecord) {
         var url = "";
-        if (category.id != null) {
-            url = "http://localhost:8080/trans/record/update";
-        } else {
-            url = "http://localhost:8080/trans/record/add";
-        }
+
+        url = "http://localhost:8080/trans/record/add";
+        transRecord.accountId = $scope.currnetSelectId;
+        $http({
+            method: "POST",
+            url: url,
+            data: transRecord
+        }).then(function (res) {
+            console.log(res);
+            $scope.response(res, "POSxT");
+            $scope.hideAddWindow();
+            $scope.queryTransRecord(transRecord.accountId);
+            $scope.listAllAccount();
+
+        });
+
+    };
+
+    $scope.updateTransRecord = function (transRecord) {
+        var url = "http://localhost:8080/trans/record/update";
         $http({
             method: "POST",
             url: url,
@@ -62,12 +86,12 @@ app.controller('accountController', function ($scope, $http) {
         });
     };
 
-    $scope.removeTransRecord = function (id) {
+    $scope.removeTransRecord = function (accountId,id) {
         $http({
             method: "DELETE",
-            url: "http://localhost:8080/trans/record?id=" + id
+            url: "http://localhost:8080/trans/record/delete?id=" + id
         }).then(function (res) {
-            $scope.listAll();
+            $scope.queryTransRecord(accountId);
         });
     };
 

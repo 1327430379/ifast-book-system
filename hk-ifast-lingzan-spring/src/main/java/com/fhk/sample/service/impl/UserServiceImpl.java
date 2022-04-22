@@ -4,6 +4,7 @@ package com.fhk.sample.service.impl;
 import com.fhk.sample.common.exception.BusinessException;
 import com.fhk.sample.common.module.SessionManager;
 import com.fhk.sample.domain.dao.UserRepository;
+import com.fhk.sample.domain.dto.LoginUser;
 import com.fhk.sample.domain.entity.User;
 import com.fhk.sample.domain.vo.PageVO;
 import com.fhk.sample.service.AccountService;
@@ -17,6 +18,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,7 +74,7 @@ public class UserServiceImpl implements UserService {
         Pageable pageable = new PageRequest(pageNum, pageSize);
         Specification<User> specification = getSpecification(user);
         Page<User> page = userRepository.findAll(specification, pageable);
-        return PageUtil.convert(pageNum,pageSize,page);
+        return PageUtil.convert(pageNum, pageSize, page);
     }
 
     @Override
@@ -101,8 +105,33 @@ public class UserServiceImpl implements UserService {
         userRepository.updateStatus(id, status);
     }
 
+    @Resource
+    private AuthenticationManager authenticationManager;
+
+//    @Override
+//    public User login(User loginUserParam) {
+//        String username = loginUserParam.getUsername();
+//        String password = loginUserParam.getPassword();
+//        String role = loginUserParam.getRole();
+//        //AuthenticationManager authenticate进行用户认证
+//        Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
+//        Authentication authenticate = authenticationManager.authenticate(authentication);
+//        //如果认证没通过，给出对应的提示
+//        BizAssert.isNotNull(authenticate, "登录失败");
+//        Object principal = authenticate.getPrincipal();
+//
+//        LoginUser loginUser = (LoginUser) principal;
+//        User user = loginUser.getUser();
+//        userRepository.updateLastLoginDate(user.getId(), new Date());
+//        SessionManager.saveUserSession(user);
+//        return user;
+//    }
+
     @Override
-    public User login(String username, String password, String role) {
+    public User login(User loginUserParam) {
+        String username = loginUserParam.getUsername();
+        String password = loginUserParam.getPassword();
+        String role = loginUserParam.getRole();
         User user = userRepository.findByUsername(username);
         BizAssert.isNotNull(user, "用户名不存在");
         BizAssert.isTrue(APPROVE_APPROVED_STATUS.equals(user.getApproveStatus()), "该用户还未审核通过");
@@ -122,7 +151,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void incrRetries(Integer userId) {
         User user = userRepository.findOne(userId);
-        user.setNumberOfRetries(user.getNumberOfRetries()+1);
+        user.setNumberOfRetries(user.getNumberOfRetries() + 1);
         userRepository.save(user);
     }
 

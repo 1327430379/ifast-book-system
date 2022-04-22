@@ -1,5 +1,6 @@
 package com.fhk.sample.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
@@ -41,6 +42,7 @@ public class Shelf implements Serializable {
 	/**
 	 * 上次访问日期
 	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date lastAccessDate;
 	/**
 	 * 阅读次数

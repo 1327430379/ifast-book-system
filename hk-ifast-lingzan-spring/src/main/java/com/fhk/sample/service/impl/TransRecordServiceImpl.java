@@ -31,11 +31,12 @@ public class TransRecordServiceImpl implements TransRecordService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public TransRecord add(TransRecord transRecord) {
+        Account account = accountRepository.findOne(transRecord.getAccountId());
+        transRecord.setUsername(account.getUsername());
         transRecord.setTransNumber(BizNoGenerator.generate(BizNoPrefix.TTN));
         transRecord.setStatus(CommonConstants.APPROVE_APPROVED_STATUS);
         transRecord.setTransType(TransType.RECHARGE);
         transRecordRepository.save(transRecord);
-        Account account = accountRepository.findOne(transRecord.getAccountId());
         accountRepository.updateBalance(account.getId(), account.getBalance().add(transRecord.getAmount()));
         return transRecord;
     }

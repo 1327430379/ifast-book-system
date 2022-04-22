@@ -28,7 +28,7 @@
 <div class="container-fluid">
     <div ng-app="contract" ng-controller="contractController" ng-init="listAll()">
         <h1>
-            <center>出版社</center>
+            <center>合同列表</center>
         </h1>
 
 
@@ -55,7 +55,7 @@
                 <td>{{x.status}}</td>
                 <td>{{x.approvedBy}}</td>
                 <td>{{x.transNumber}}</td>
-                <td>{{x.amount}}</td>
+                <td>{{x.amount | number: '2'}}</td>
                 <td>
                     <!-- 编辑功能的edit()方法，还在listController 里面设置的-->
                     <a class="btn btn-sm btn-primary" role="button" ng-click="remove(x.id)">作废</a>

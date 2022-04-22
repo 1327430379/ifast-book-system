@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 
     <script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
-    <script src="account-controller.js"></script>
+    <script src="user-account-controller.js"></script>
     <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
 
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
@@ -27,7 +27,7 @@
 
 <body>
 <div class="container-fluid">
-    <div ng-app="account" ng-controller="accountController" ng-init="listAllAccount()">
+    <div ng-app="std.app" ng-controller="userAccountController" ng-init="listAllAccount()">
         <h1>
             <center>账户管理</center>
         </h1>
@@ -37,20 +37,22 @@
             <thead>
             <td style="display: none">id</td>
             <td>用户名</td>
+            <td>余额</td>
             <td>状态</td>
             <td>审批人</td>
             </thead>
             <tr ng-repeat="x in accountList" ng-click="queryTransRecord(x.id)">
                 <td style="display: none">{{x.id}}</td>
                 <td>{{x.username}}</td>
+                <td>{{x.balance | number:'2'}}</td>
                 <td>{{x.status}}</td>
                 <td>{{x.approvedBy}}</td>
                 <td>
                     <!-- 编辑功能的edit()方法，还在listController 里面设置的-->
-                    <a class="btn btn-sm btn-primary" role="button" ng-click="showAddWindow();getById(x.id)"
-                       data-toggle="modal"
-                       data-target="#exampleModal">编辑</a>
-                    <a class="btn btn-sm btn-primary" role="button" ng-click="remove(x.id)">删除</a>
+<!--                    <a class="btn btn-sm btn-primary" role="button" ng-click="showAddWindow();getById(x.id)"-->
+<!--                       data-toggle="modal"-->
+<!--                       data-target="#exampleModal">编辑</a>-->
+<!--                    <a class="btn btn-sm btn-primary" role="button" ng-click="removeTransRecord(x.id)">删除</a>-->
                 </td>
             </tr>
         </table>
@@ -70,13 +72,13 @@
                 <td>{{x.username}}</td>
                 <td>{{x.amount}}</td>
                 <td>{{x.status}}</td>
-                <td>{{x.createdDate}}</td>
+                <td>{{x.remarks}}</td>
                 <td>
                     <!-- 编辑功能的edit()方法，还在listController 里面设置的-->
                     <a class="btn btn-sm btn-primary" role="button" ng-click="showAddWindow();getTransRecordById(x.id)"
                        data-toggle="modal"
                        data-target="#exampleModal">编辑</a>
-                    <a class="btn btn-sm btn-primary" role="button" ng-click="removeTransRecord(x.id)">删除</a>
+                    <a class="btn btn-sm btn-primary" role="button" ng-click="removeTransRecord(x.accountId,x.id)">删除</a>
                 </td>
             </tr>
         </table>
@@ -88,7 +90,7 @@
             </center>
         </div>
 
-
+        <hr/>
         <!-- 流水表单 Modal -->
         <div class="modal-dialog" id="modal-window">
             <div class="modal-content">
@@ -100,8 +102,6 @@
                 </div>
                 <div class="modal-body">
                     <form id="addCategoryForm">
-                        <input type="hidden" value="{{transRecordModel.id}}" class="form-control" id="transRecordId"
-                               ng-model="transRecordModel.id">
 
                         <div class="form-group">
                             <label for="transRecordAmount">金额</label>

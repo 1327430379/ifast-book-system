@@ -13,12 +13,13 @@ public class TXTReader extends FileReader {
     @Override
     public void read(String path, HttpServletResponse response) {
         FileInputStream inputStream = null;
+        response.setContentType("text/html;charset=utf-8");
         try {
             inputStream = new FileInputStream(path);
             BufferedReader bis = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
             String temp;
             while ((temp = bis.readLine()) != null) {
-                response.setCharacterEncoding("GBK");
+                response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(temp);
                 System.out.println(temp);
             }

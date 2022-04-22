@@ -44,9 +44,6 @@ public class LoginInterceptor implements HandlerInterceptor {
         if (whiteList.contains(uri)) {
             return true;
         }
-        if (1 == 1) {
-            return true;
-        }
         //这里为userId+username
         String auth = request.getHeader("auth");
         if (StringUtils.isBlank(auth)) {

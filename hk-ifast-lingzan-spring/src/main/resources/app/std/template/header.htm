@@ -15,32 +15,257 @@
             integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
             crossorigin="anonymous"></script>
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-    <script src="../user/user-controller.js"></script>
+    <!--    <script src="../user/user-controller.js"></script>-->
+    <!--    <script src="../author/author-controller.js"></script>-->
+    <!--    <script src="../book/book-controller.js"></script>-->
+    <!--    <script src="../book-user/book-user-controller.js"></script>-->
+    <!--    <script src="../category/category-controller.js"></script>-->
+    <!--    <script src="../cheque/cheque-controller.js"></script>-->
+    <!--    <script src="../publisher/publisher-controller.js"></script>-->
+    <!--    <script src="../contract/contract-controller.js"></script>-->
+    <!--    <script src="../statistics/statistics-controller.js"></script>-->
+    <!--    <script src="../user-account/user-account-controller.js"></script>-->
+    <!--    <script src="header-controller.js"></script>-->
+
+    <script>
+        'use strict';
+        var app = angular.module('head');
+
+        app.controller('headerController', function ($scope, $rootScope, $http) {
+            $scope.loginUser = {role: '', username: '', password: ''};
+            $rootScope.currentUserSession = {role: 'guest', username: '', auth: ''};
+            $scope.init = function () {
+                console.log($rootScope.currentUserAuth)
+            };
+
+            $scope.initCurrentUser = function () {
+                // $rootScope.currentUserSession = sessionStorage.getItem('currentLoginUser');
+                // console.log("登录用户信息：" + JSON.stringify($rootScope.currentUserSession));
+                // $scope.currentUserSession.auth = $scope.currentUserSession.id + "_" + $scope.currentUserSession.username;
+            }
+
+            $scope.showRegisterUserWindow = function () {
+                document.getElementById('modal-register').style.display = 'block';
+            }
+
+            $scope.hideRegisterUserWindow = function () {
+                document.getElementById('modal-register').style.display = 'none';
+            }
+            $scope.showEditUserWindow = function () {
+                document.getElementById('editUserModal').style.display = 'block';
+            }
+
+            $scope.hideEditUserWindow = function () {
+                document.getElementById('editUserModal').style.display = 'none';
+            }
+
+            $scope.showLoginWindow = function (role) {
+                $rootScope.currentRole = role;
+
+                document.getElementById('modal-login').style.display = 'block';
+            }
+
+            $scope.hideLoginWindow = function () {
+                document.getElementById('modal-login').style.display = 'none';
+            }
+
+            $scope.login = function (user) {
+                user.role = $rootScope.currentRole;
+                $http({
+                    method: "POST",
+                    url: "http://localhost:8080/user/login",
+                    data: user
+                }).then(function (res) {
+                    if (res.status === 200 && res.data.resultCode === '0' && res.data.data !== null) {
+                        alert('登录成功');
+                        var user = res.data.data;
+                        var token = user.id + "_" + user.username;
+                        user.token = token;
+                        console.log("token:" + token);
+                        //  $httpProvider.defaults.headers.common = {'auth': token};
+                        $rootScope.currentUserAuth = token;
+                        $scope.copyUserSession(user);
+                        console.log("登录的用户session:" + JSON.stringify($rootScope.currentUserSession))
+                        sessionStorage.setItem('currentLoginUser', $rootScope.currentUserSession);
+                        $scope.initCurrentUser();
+                        $scope.hideLoginWindow();
+                    } else {
+                        alert('登录失败：' + res.data.resultMsg);
+                    }
+                });
+            };
+            $scope.copyUserSession = function (user) {
+                $rootScope.currentUserSession['role'] = user.role;
+                $rootScope.currentUserSession['username'] = user.username;
+                $rootScope.currentUserSession['auth'] = user.auth;
+            };
+
+
+            $scope.logout = function () {
+                $http({
+                    method: "GET",
+                    url: "http://localhost:8080/user/list"
+                }).then(function (res) {
+                    $scope.userList = res.data.data.data;
+                    $rootScope.currentUserSession = {role: 'guest', username: '', auth: ''};
+                    $rootScope.currentUserAuth = undefined;
+                    console.log("用户列表：" + JSON.stringify($scope.userList));
+                });
+            };
+
+            $scope.listAll = function () {
+                $scope.hideLoginWindow();
+                $scope.hideRegisterUserWindow();
+                $http({
+                    method: "GET",
+                    url: "http://localhost:8080/user/list",
+                }).then(function (res) {
+                    $scope.userList = res.data.data.data;
+                    console.log("用户列表：" + JSON.stringify($scope.userList));
+                });
+            };
+
+            $scope.save = function (user) {
+                console.log("请求参数：" + JSON.stringify(user));
+                var url = "";
+                var tips = "";
+                if (user.id != null) {
+                    url = "http://localhost:8080/user/update";
+                } else {
+                    url = "http://localhost:8080/user/add";
+                }
+                $http({
+                    method: "POST",
+                    url: url,
+                    data: user
+                }).then(function (res) {
+                    $scope.listAll();
+                    console.log(res);
+                });
+
+            };
+
+            $scope.register = function (user) {
+                if (user.password !== user.confirmPassword) {
+                    alert('两次输入的密码不一致');
+                    return;
+                }
+                user.role = 'customer';
+                console.log("请求参数：" + JSON.stringify(user));
+                $http({
+                    method: "POST",
+                    url: 'http://localhost:8080/user/register',
+                    data: user
+                }).then(function (res) {
+                    console.log(res);
+                    if (res.data.resultCode === '0') {
+                        alert('注册成功');
+                        $scope.register();
+                    } else {
+                        alert('注册失败,原因：' + res.data.resultMsg);
+                    }
+                    $scope.listAll();
+                });
+
+            };
+
+            $scope.getById = function (id) {
+                $http({
+                    method: "GET",
+                    url: "http://localhost:8080/user/info/" + id
+                }).then(function (res) {
+                    $scope.response(res, 'DELETE');
+                    $scope.userModel = res.data.data;
+                    console.log("result数据：" + JSON.stringify(res.data.data));
+                });
+            };
+
+            $scope.remove = function (id) {
+                $http({
+                    method: "DELETE",
+                    url: "http://localhost:8080/user/delete/" + id
+                }).then(function (res) {
+                    $scope.response(res, 'DELETE');
+                    $scope.listAll();
+                });
+            };
+
+            $scope.updateStatus = function (id, status) {
+                var updateStatusVal = status === 0 ? 1 : 0;
+                console.log("id:" + id, "status:" + updateStatusVal);
+                $http({
+                    method: "POST",
+                    url: "http://localhost:8080/user/status/update?id=" + id + "&status=" + updateStatusVal
+                }).then(function (res) {
+                    $scope.response(res, 'POST');
+                    $scope.listAll();
+                });
+            };
+
+            $scope.approve = function (id) {
+                $http({
+                    method: "POST",
+                    url: "http://localhost:8080/user/approve?id=" + id
+                }).then(function (res) {
+                    $scope.response(res, 'POST');
+                    $scope.listAll();
+                });
+            };
+
+            $scope.response = function (res, method) {
+                if (res.status !== 200) {
+                    alert('提交到服务器失败')
+                    return;
+                }
+
+                if (res.data.resultCode !== '0') {
+                    alert('服务端出错');
+                    return;
+                }
+                if ('POST' === method) {
+                    alert('提交到服务器成功');
+                }
+            }
+
+
+        });
+
+
+    </script>
 </head>
 
 <h1>Sample Application</h1>
-<div ng-controller="userController">
-    <button type="button" class="btn btn-slave" ng-click="showRegisterUserWindow()">注册</button>
-    <button type="button" class="btn btn-primary" ng-click="showLoginWindow('moderator')">版主登录</button>
-    <button type="button" class="btn btn-primary" ng-click="showLoginWindow('customer')">普通用户登录</button>
-    <button type="button" class="btn btn-danger" ng-click="logout()"> 注销</button>
-</div>
-<a href="#/home">Home</a>&nbsp;
-<a href="#/page/a">PageA</a>
-<a href="#/page/b">PageB</a>
-<a href="#/author">Author</a>
-<a href="#/category">Category</a>
-<a href="#/cheque">Cheque</a>
-<a href="#/publisher">Publisher</a>
-<a href="#/book">Book</a>
-<a href="#/publisher">Publisher</a>
-<a href="#/account/list">Account</a>
-<a href="#/user">User</a>
-<a href="#/contract">Contract</a>
-<a href="#/statistics">Statistics</a>
+<!--<div ng-controller="headerController" ng-app="std.app">-->
+<!--    -->
+<!--</div>-->
 
 
-<div ng-controller="userController">
+<div ng-controller="headerController" ng-app="head">
+    <button type="button" class="btn btn-slave" ng-click="showRegisterUserWindow()"
+            ng-show="currentUserAuth===undefined">注册
+    </button>
+    <button type="button" class="btn btn-primary" ng-click="showLoginWindow('moderator')"
+            ng-show="currentUserAuth===undefined">版主登录
+    </button>
+    <button type="button" class="btn btn-primary" ng-click="showLoginWindow('customer')"
+            ng-show="currentUserAuth===undefined">普通用户登录
+    </button>
+    <button type="button" class="btn btn-danger" ng-click="logout()" ng-show="currentUserAuth!==undefined"> 注销</button>
+
+    <div><label>当前登录人：</label><input type="text" ng-model="currentUserAuth"></input></div>
+    <a href="#/home">Home</a>&nbsp;
+    <a href="#/author">Author</a>
+    <a href="#/category">Category</a>
+    <a href="#/cheque">Cheque</a>
+    <a href="#/publisher">Publisher</a>
+    <a href="#/book">Stock</a>
+    <a href="#/publisher">Publisher</a>
+    <a href="#/user-account">Account</a>
+    <a href="#/user">User</a>
+    <a href="#/contract">Contract</a>
+    <a href="#/shelf">Shelf</a>
+    <a href="#/statistics">Statistics</a>
+    <a href="#/book-user">Book</a>
     <!--    注册窗口-->
     <div class="modal-dialog" id="modal-register" style="display: none">
         <div class="modal-content">
@@ -67,7 +292,8 @@
                     </div>
                     <div class="form-group">
                         <label for="confirmPassword">确认密码</label>
-                        <input type="password" class="form-control" id="confirmPassword" ng-model="userModel.confirmPassword">
+                        <input type="password" class="form-control" id="confirmPassword"
+                               ng-model="userModel.confirmPassword">
                     </div>
                     <div class="form-group">
                         <label for="name">姓名</label>
@@ -94,7 +320,8 @@
                         <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal"
                                 ng-click="hideRegisterUserWindow()">关闭
                         </button>
-                        <button type="button" class="btn btn-primary" ng-click="register(userModel)" data-dismiss="modal">
+                        <button type="button" class="btn btn-primary" ng-click="register(userModel)"
+                                data-dismiss="modal">
                             注册
                         </button>
                     </div>
@@ -116,7 +343,8 @@
             </div>
             <div class="modal-body">
                 <form id="loginUserForm">
-                    <input type="hidden" value="{{authorModel.id}}" class="form-control" ng-model="loginUser.role">
+                    <input type="text" style="display: none" id="login-role" class="form-control"
+                           ng-model="loginUser.role">
 
                     <div class="form-group">
                         <label for="username">用户名</label>

@@ -1,12 +1,16 @@
 var app = angular.module('std.app');
-app.controller('authorController', function ($scope, $http) {
+app.controller('authorController', function ($scope, $http, $rootScope) {
 
 
     $scope.authorList = [];
     $scope.currentAuthor = {};
 
-
-
+    // $scope.loginUser = {role: '', username: '', password: ''};
+    // $rootScope.currentUserSession = {role:'guest',username:'',auth:''};
+    $scope.init = function () {
+        var user = sessionStorage.getItem('currentLoginUser');
+        console.log(JSON.stringify(user.role))
+    };
     $scope.showAddWindow = function () {
         document.getElementById('modal-window').style.display = 'block';
     }

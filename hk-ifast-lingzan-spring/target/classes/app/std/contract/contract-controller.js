@@ -1,7 +1,8 @@
 'use strict';
 var app = angular.module('std.app');
-app.controller('contractController', function ($scope, $http) {
-
+app.controller('contractController', function ($scope, $http,$rootScope) {
+    // $scope.loginUser = {role: '', username: '', password: ''};
+    // $rootScope.currentUserSession = {role:'guest',username:'',auth:''};
 
     $scope.showAddWindow = function () {
         document.getElementById('modal-window').style.display = 'block';

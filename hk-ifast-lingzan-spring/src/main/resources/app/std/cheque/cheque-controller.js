@@ -1,8 +1,9 @@
 'use strict';
-var app = angular.module('std.app');app.controller('chequeController', function ($scope, $http) {
+var app = angular.module('std.app');
+app.controller('chequeController', function ($scope, $http,$rootScope) {
 
-
-    sessionStorage.getItem("currentUser")
+    // $scope.loginUser = {role: '', username: '', password: ''};
+    // $rootScope.currentUserSession = {role:'guest',username:'',auth:''};
     $scope.listAll = function () {
         $http({
             method: "GET",
@@ -46,6 +47,14 @@ var app = angular.module('std.app');app.controller('chequeController', function 
         });
     };
 
+    $scope.voiding = function (id) {
+        $http({
+            method: "POST",
+            url: "http://localhost:8080/cheque/void?id=" + id
+        }).then(function (res) {
+            $scope.listAll();
+        });
+    };
 
 });
 
