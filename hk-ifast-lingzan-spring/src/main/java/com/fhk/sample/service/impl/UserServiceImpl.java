@@ -108,40 +108,40 @@ public class UserServiceImpl implements UserService {
     @Resource
     private AuthenticationManager authenticationManager;
 
-//    @Override
-//    public User login(User loginUserParam) {
-//        String username = loginUserParam.getUsername();
-//        String password = loginUserParam.getPassword();
-//        String role = loginUserParam.getRole();
-//        //AuthenticationManager authenticate进行用户认证
-//        Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
-//        Authentication authenticate = authenticationManager.authenticate(authentication);
-//        //如果认证没通过，给出对应的提示
-//        BizAssert.isNotNull(authenticate, "登录失败");
-//        Object principal = authenticate.getPrincipal();
-//
-//        LoginUser loginUser = (LoginUser) principal;
-//        User user = loginUser.getUser();
-//        userRepository.updateLastLoginDate(user.getId(), new Date());
-//        SessionManager.saveUserSession(user);
-//        return user;
-//    }
-
     @Override
     public User login(User loginUserParam) {
         String username = loginUserParam.getUsername();
         String password = loginUserParam.getPassword();
         String role = loginUserParam.getRole();
-        User user = userRepository.findByUsername(username);
-        BizAssert.isNotNull(user, "用户名不存在");
-        BizAssert.isTrue(APPROVE_APPROVED_STATUS.equals(user.getApproveStatus()), "该用户还未审核通过");
-        BizAssert.isTrue(password.equals(user.getPassword()), PASSWORD_INPUT_ERROR.getCode(), PASSWORD_INPUT_ERROR.getMsg());
-        BizAssert.isTrue(USER_ENABLE_STATUS.equals(user.getStatus()), "该用户已被禁用");
-        BizAssert.isTrue(role.equals(user.getRole()), "角色不匹配");
+        //AuthenticationManager authenticate进行用户认证
+        Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
+        Authentication authenticate = authenticationManager.authenticate(authentication);
+        //如果认证没通过，给出对应的提示
+        BizAssert.isNotNull(authenticate, "登录失败");
+        Object principal = authenticate.getPrincipal();
+
+        LoginUser loginUser = (LoginUser) principal;
+        User user = loginUser.getUser();
         userRepository.updateLastLoginDate(user.getId(), new Date());
         SessionManager.saveUserSession(user);
         return user;
     }
+
+//    @Override
+//    public User login(User loginUserParam) {
+//        String username = loginUserParam.getUsername();
+//        String password = loginUserParam.getPassword();
+//        String role = loginUserParam.getRole();
+//        User user = userRepository.findByUsername(username);
+//        BizAssert.isNotNull(user, "用户名不存在");
+//        BizAssert.isTrue(APPROVE_APPROVED_STATUS.equals(user.getApproveStatus()), "该用户还未审核通过");
+//        BizAssert.isTrue(password.equals(user.getPassword()), PASSWORD_INPUT_ERROR.getCode(), PASSWORD_INPUT_ERROR.getMsg());
+//        BizAssert.isTrue(USER_ENABLE_STATUS.equals(user.getStatus()), "该用户已被禁用");
+//        BizAssert.isTrue(role.equals(user.getRole()), "角色不匹配");
+//        userRepository.updateLastLoginDate(user.getId(), new Date());
+//        SessionManager.saveUserSession(user);
+//        return user;
+//    }
 
     @Override
     public void logout(String username) {

@@ -30,7 +30,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(s);
 
-
         BizAssert.isNotNull(user, "用户名不存在");
         BizAssert.isTrue(APPROVE_APPROVED_STATUS.equals(user.getApproveStatus()), "该用户还未审核通过");
         BizAssert.isTrue(USER_ENABLE_STATUS.equals(user.getStatus()), "该用户已被禁用");
